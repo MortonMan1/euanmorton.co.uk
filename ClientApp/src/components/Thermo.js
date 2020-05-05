@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-export class Home extends Component {
+export class Thermo extends Component {
     constructor(props) {
         super(props);
         // Don't call this.setState() here!
@@ -29,9 +29,9 @@ export class Home extends Component {
     }
 
     componentDidMount() {
-       // this.getData();
+        // this.getData();
 
-        
+
     }
 
     static getThermo(forecasts) {
@@ -44,9 +44,9 @@ export class Home extends Component {
 
 
 
-    static displayName = Home.name;
-    
-    
+    static displayName = Thermo.name;
+
+
 
     getHeating() {
         fetch("http://192.168.0.13:8080/api/getHeatingStatus")
@@ -93,7 +93,7 @@ export class Home extends Component {
                     if (result.result) {
                         this.setState({ heatingStatus: result.message })
                     }
-                    
+
                 },
                 (error) => {
                     console.log('Looks like there was a problem: \n', error);
@@ -112,59 +112,59 @@ export class Home extends Component {
                 (error) => {
                     console.log('Looks like there was a problem: \n', error);
                 })
-    } 
+    }
 
     onSubmit = () => {
         return <Redirect to="/calander/" />
     }
-    
+
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : Home.renderForecastsTable(this.state.thermocondata);
+            : Thermo.renderForecastsTable(this.state.thermocondata);
 
-    return (
-      <div>
-            <h1>Welcome to euanmorton.co.uk!</h1>
-            <div className="div1">
-                <h5>Heating status</h5>
-                <p>{this.state.heatingStatus}</p>
-                <p>Current temp: <span>{this.state.currentTemp}</span></p>
-            </div>
-            <div className="container">
-                <div className="row">
-                    <div className="col-12">
-                        <button onClick={this.heatingToggle}>ToggleHeating</button>
-                        <button onClick={this.heatingOn}>Heating On</button>
-                        <button onClick={this.heatingOff}>Heating Off</button>
+        return (
+            <div>
+                <h1>Thermo control</h1>wdsq
+                <div className="div1">
+                    <h5>Heating status</h5>
+                    <p>{this.state.heatingStatus}</p>
+                    <p>Current temp: <span>{this.state.currentTemp}</span></p>
+                </div>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <button onClick={this.heatingToggle}>ToggleHeating</button>
+                            <button onClick={this.heatingOn}>Heating On</button>
+                            <button onClick={this.heatingOff}>Heating Off</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
 
-            <div>
-                <p>{this.state.heatingToggleText}</p>
+
+                <div>
+                    <p>{this.state.heatingToggleText}</p>
+                </div>
+                <div>
+                    <p>{this.state.heatingToggleText}</p>
+                </div>
+                <div>
+                    {contents}
+                </div>
+                <div>
+                    <p>Current temp from file: <span>{this.state.currentTempFromFile}</span></p>
+                </div>
             </div>
-            <div>
-                <p>{this.state.heatingToggleText}</p>
-            </div>
-            <div>
-                {contents}
-            </div>
-            <div>
-                <p>Current temp from file: <span>{this.state.currentTempFromFile}</span></p>
-            </div>
-      </div>
-    );
+        );
     }
 
     async readHeatingFile() {
 
-            const response = await fetch('/api/thermo/');
-            const data = await response.json();
-            console.log("data returned: ", data.temperature);
-            this.setState({ currentTempFromFile: data.Temperature });
-        
+        const response = await fetch('/api/thermo/');
+        const data = await response.json();
+        console.log("data returned: ", data.temperature);
+        this.setState({ currentTempFromFile: data.Temperature });
+
 
 
 
@@ -183,7 +183,7 @@ export class Home extends Component {
         console.log("nbew data thermo", data);
         this.setState({ thermocondata: data, loading: false });
     }
-    
+
 }
 /*
                 //<button onClick={() => history.push('/Calendar')}>Calendar</button>

@@ -15,5 +15,6 @@ namespace WebApplication1
         public int Temperature { get; set; }
         public int TimeOn { get; set; }
         public int LastUpdated { get; set; }
+        public string Test { get; set; }
     }
 }

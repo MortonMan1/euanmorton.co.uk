@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+//using System.Web.Script.Serialization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,9 +17,13 @@ namespace WebApplication1.Controllers
         // GET: api/<controller>
         [HttpGet]
         //[Route("api/posts/createnewpost")]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            string thermoText = ReadJsonFile();
+
+            //var json = JsonConvert.DeserializeObject(thermoText);
+            return thermoText;
+            //return new string[] { "value1", "value2" };
         }
 
         // GET api/<controller>/5
@@ -41,7 +46,7 @@ namespace WebApplication1.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public string Post(Thermo value)
+        public IActionResult Post([FromBody]Thermo value)
         {
             //Thermo thermo_data = new Thermo();
             //thermo_data.Temperature = value.temp;
@@ -53,7 +58,8 @@ namespace WebApplication1.Controllers
             //write string to file
             WriteJsonFile(json);
 
-            return "thankyou";
+            //return "thankyou";
+            return Json(value);
         }
 
         // PUT api/<controller>/5
@@ -75,6 +81,15 @@ namespace WebApplication1.Controllers
             System.IO.File.WriteAllText(@"T:\Projects\Euan Morton Website\WebApplication1\WebApplication1\thermoData.txt", json);
 #else
             System.IO.File.WriteAllText(@"/var/www/WebApplication1/thermoData.txt", json);
+#endif
+
+        }
+        protected string ReadJsonFile()
+        {
+#if DEBUG
+            return System.IO.File.ReadAllText(@"T:\Projects\Euan Morton Website\WebApplication1\WebApplication1\thermoData.txt");
+#else
+            return System.IO.File.ReadAllText(@"/var/www/WebApplication1/thermoData.txt");
 #endif
 
         }
