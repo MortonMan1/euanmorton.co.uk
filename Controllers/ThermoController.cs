@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 //using System.Web.Script.Serialization;
@@ -12,6 +13,7 @@ using Newtonsoft.Json;
 namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class ThermoController : Controller
     {
         // GET: api/<controller>
@@ -46,7 +48,7 @@ namespace WebApplication1.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post([FromBody]Thermo value)
+        public IActionResult Post([FromBody]UserLogin value)
         {
             //Thermo thermo_data = new Thermo();
             //thermo_data.Temperature = value.temp;

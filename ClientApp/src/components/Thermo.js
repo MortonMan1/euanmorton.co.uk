@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import FetchService from '../services/FetchService';
 
 export class Thermo extends Component {
     constructor(props) {
@@ -160,10 +161,13 @@ export class Thermo extends Component {
 
     async readHeatingFile() {
 
-        const response = await fetch('/api/thermo/');
-        const data = await response.json();
-        console.log("data returned: ", data.temperature);
-        this.setState({ currentTempFromFile: data.Temperature });
+        //const response = await fetch('/api/thermo/');
+        //const data = await response.json();
+
+        const thermoData = FetchService.getData('/api/thermo/');
+
+        console.log("data returned: ", thermoData.temperature);
+        this.setState({ currentTempFromFile: thermoData.Temperature });
 
 
 

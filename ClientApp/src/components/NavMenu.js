@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import AuthService from '../services/AuthService'
 import './NavMenu.css';
 
 export class NavMenu extends Component {
@@ -9,17 +10,22 @@ export class NavMenu extends Component {
   constructor (props) {
     super(props);
 
-    this.toggleNavbar = this.toggleNavbar.bind(this);
+      this.toggleNavbar = this.toggleNavbar.bind(this);
+      this.logoutTest = this.logoutTest.bind(this);
     this.state = {
       collapsed: true
     };
   }
 
-  toggleNavbar () {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  }
+    toggleNavbar() {
+        this.setState({
+            collapsed: !this.state.collapsed
+        });
+    }
+    
+    logoutTest() {
+        AuthService.logout();
+    }
 
   render () {
     return (
@@ -40,9 +46,13 @@ export class NavMenu extends Component {
                         <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} className="text-dark" to="/calendar">Calendar</NavLink>
+                        <NavLink tag={Link} className="text-dark" to="/thermo">Thermo</NavLink>
                     </NavItem>
-              </ul>
+                        </ul>
+
+                        <div className="div1">
+                            <button onClick={this.logoutTest}>Logout (test)</button>
+                        </div>
             </Collapse>
           </Container>
         </Navbar>

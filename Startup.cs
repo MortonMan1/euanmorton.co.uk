@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
 
 namespace WebApplication1
 {
@@ -19,6 +23,25 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string security_key = Environment.GetEnvironmentVariable("SECRET_KEY");
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(security_key));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration.GetSection("CustomSettings").GetSection("issuer").Value,
+                        ValidAudience = Configuration.GetSection("CustomSettings").GetSection("audience").Value,
+                        IssuerSigningKey = symmetricSecurityKey
+                    };
+                }
+            );
+
 
             services.AddControllersWithViews();
 
@@ -44,7 +67,15 @@ namespace WebApplication1
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -62,6 +93,7 @@ namespace WebApplication1
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
         }
     }
 }

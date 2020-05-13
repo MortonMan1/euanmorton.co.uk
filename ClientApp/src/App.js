@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
+import PrivateRoute from './components/PrivateRoute'
+
 import { Layout } from './components/Layout';
+import { Login } from './components/Login';
 import { Home } from './components/Home';
 import { Thermo } from './components/Thermo';
 import { FetchData } from './components/FetchData';
@@ -14,12 +17,13 @@ export default class App extends Component {
 
   render () {
     return (
-      <Layout>
-            <Route exact path='/' component={Home} />
-            <Route path='/thermo' component={Thermo} />
-            <Route path='/counter' component={Counter} />
-            <Route path='/fetch-data' component={FetchData} />
-            <Route path='/calendar' component={Calendar} />
+        <Layout>
+            <Route path="/login" component={Login} />
+            <PrivateRoute exact path='/' component={Home} />
+            <PrivateRoute path='/thermo' component={Thermo} />
+            <PrivateRoute path='/counter' component={Counter} />
+            <PrivateRoute path='/fetch-data' component={FetchData} />
+            <PrivateRoute path='/calendar' component={Calendar} />
       </Layout>
     );
   }
